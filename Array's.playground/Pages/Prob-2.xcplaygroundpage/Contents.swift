@@ -23,8 +23,38 @@ import UIKit
  
  */
 func solution(_ S : String) -> String {
-    // do your work here
-    return ""
+    
+    let noSpace = S.replacingOccurrences(of: " ", with: "")
+    let noSpaceNoDash = noSpace.replacingOccurrences(of: "-", with: "")
+        
+    // loop through char-by-char appending dashes
+    var result = ""
+    
+    var count = -2
+    for c in noSpaceNoDash {
+        result.append(c)
+        if count % 3 == 0 {
+            result.append("-")
+        }
+        count += 1
+    }
+    
+    // strip off lingering dash
+    if result.last == "-" {
+        result = String(result.dropLast())
+    }
+    
+    // if second last char has a dash (-x)
+    // reformat last three chars to (-xx)
+    var chars = Array(result)
+    let secondLastPtr = chars.count - 2
+    if chars[secondLastPtr] == "-" {
+        // *-x > -*x
+        chars[secondLastPtr] = chars[secondLastPtr - 1]
+        chars[secondLastPtr - 1] = "-"
+    }
+
+    return String(chars)
 }
 
 solution("123456789")           // 123-456-789
